@@ -6,11 +6,12 @@
 //import processing.sound.*;
 
 //GAME VARIABLES
-Grid grid = new Grid(6,8);
+Grid grid = new Grid(5,16);
 //HexGrid hGrid = new HexGrid(3);
 PImage bg;
 PImage player1;
 PImage player2;
+PImage enemy;
 PImage endScreen;
 String titleText = "HorseChess";
 String extraText = "Who's Turn?";
@@ -19,24 +20,27 @@ boolean doAnimation;
 //SoundFile song;
 
 int player1Row = 3;
+int player1Col = 4;
 
 
 //Required Processing method that gets run once
 void setup() {
 
   //Match the screen size to the background image size
-  size(800, 600);
-
+  // size(800, 600);
+  size(1621,526);
   //Set the title on the title bar
   surface.setTitle(titleText);
 
   //Load images used
   //bg = loadImage("images/chess.jpg");
-  bg = loadImage("images/x_wood.png");
-  bg.resize(800,600);
-  player1 = loadImage("images/x_wood.png");
+  bg = loadImage("images/sky.png");
+  bg.resize(1621,526);//800,600);
+  player1 = loadImage("images/zapdos.png");
   player1.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
   endScreen = loadImage("images/youwin.png");
+  enemy = loadImage("images/articuno.png");
+  enemy.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
 
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
@@ -77,19 +81,25 @@ void keyPressed(){
   //What to do when a key is pressed?
   
   //set "w" key to move the player1 up
-  if(keyCode == 87){
-    //check case where out of bounds
-    
+  if(player1Row !=0 && keyCode == 87){
     //change the field for player1Row
     player1Row--;
 
     //shift the player1 picture up in the 2D array
     GridLocation loc = new GridLocation(player1Row, 0);
     grid.setTileImage(loc, player1);
-
-    //eliminate the picture from the old location
-
   }
+
+  //set [RIGHT] key to move the player1 up
+  if(player1Col !=  grid.getCols()-1 && keyCode == 39){
+    //change the field for player1Col
+    player1Col++;
+
+    //shift the player1 picture up in the 2D array
+    GridLocation loc = new GridLocation(player1Row, player1Col);
+    grid.setTileImage(loc, player1);
+  }
+
 }
   //Known Processing method that automatically will run when a mouse click triggers it
   void mouseClicked(){
@@ -99,7 +109,12 @@ void keyPressed(){
     System.out.println("Grid location: " + grid.getGridLocation());
 
     //what to do if clicked? (Make player1 disappear?)
-
+    GridLocation clickedLoc = grid.getGridLocation();
+    GridLocation player1Loc = new GridLocation(player1Row,player1Col);
+    
+    if(clickedLoc.equals(player1Loc)){
+      player1Col--;
+    }
 
     //Toggle the animation on & off
     doAnimation = !doAnimation;
@@ -108,7 +123,6 @@ void keyPressed(){
     
   }
 
-}
 
 
 
@@ -134,7 +148,7 @@ public void updateScreen(){
   background(bg);
 
   //Display the Player1 image
-  GridLocation player1Loc = new GridLocation(player1Row,0);
+  GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
   
   //update other screen elements
@@ -144,6 +158,16 @@ public void updateScreen(){
 
 //Method to populate enemies or other sprites on the screen
 public void populateSprites(){
+
+  int lastCol = grid.getCols()-1;
+  for(int r=0; r<grid.getRows(); r++){
+    double rando = Math.random();
+    if(rando < 0.1){
+      grid.setTileImage(new GridLocation(r,lastCol), enemy);
+    }
+
+  }
+
 
 }
 
