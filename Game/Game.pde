@@ -1,6 +1,6 @@
 /* Game Class Starter File
  * Authors: _____________________
- * Last Edit: 5/17/23
+ * Last Edit: 5/22/2023
  */
 
 //import processing.sound.*;
@@ -28,13 +28,12 @@ int player1Col = 4;
 void setup() {
 
   //Match the screen size to the background image size
-  // size(800, 600);
   size(1500,500);
+  
   //Set the title on the title bar
   surface.setTitle(titleText);
 
   //Load images used
-  //bg = loadImage("images/chess.jpg");
   bg = loadImage("images/sky.png");
   bg.resize(1500,500);
   player1 = loadImage("images/zapdos.png");
@@ -46,7 +45,6 @@ void setup() {
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
   // song.play();
-
   
   //Animation & Sprite setup
   exampleAnimationSetup();
@@ -196,7 +194,7 @@ public void populateSprites(){
     double rando = Math.random();
 
     //10% of the time, decide to add an image to a Tile
-    if(rando < 0.05){
+    if(rando < 0.15){
       grid.setTileImage(new GridLocation(r,lastCol), enemy);
     }
 
@@ -278,6 +276,6 @@ public void exampleAnimationSetup(){
 //example method that animates the horse Sprites
 public void checkExampleAnimation(){
   if(doAnimation){
-    exampleSprite.animateHorizontal(1.0, 0.2, true);
+    exampleSprite.animateHorizontal(5.0, 1.0, true);
   }
 }
