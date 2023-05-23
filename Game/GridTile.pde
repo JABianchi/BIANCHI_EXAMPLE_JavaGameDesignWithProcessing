@@ -12,6 +12,7 @@ public class GridTile{
   
   private GridLocation location;
   private PImage pi;
+  private AnimatedSprite sprite;
   private boolean coveredPic;
   private color fillColor;
   final color defaultFillColor = #FFFFFF; //WHITE
@@ -27,7 +28,7 @@ public class GridTile{
     location = loc;
     fillColor = defaultFillColor;
     outlineColor = defaultOutlineColor;
-    coveredPic = false; 
+    coveredPic = false;
   }
   
   //GridTile constructor #2 which adds a mark, but no Location
@@ -69,7 +70,7 @@ public class GridTile{
     }
   }
   
-  // Mutator method that sets an new PImage in the GridTile
+  // Mutator method that sets a new PImage in the GridTile
   public void setImage(PImage pi){
     this.pi = pi;
   }
@@ -79,8 +80,27 @@ public class GridTile{
     return pi;
   }
 
+  //Method to check if the GridTile has an PImage in it
   public boolean hasImage(){
     if(pi == null){
+      return false;
+    }
+    return true;
+  }
+
+ // Mutator method that sets a new AnimatedSprite in the GridTile
+  public void setSprite(AnimatedSprite sprite){
+    this.sprite = sprite;
+  }
+
+  //Accessor method that returns the AnimatedSprite stored in the GridTile
+  public AnimatedSprite getSprite(){
+    return this.sprite;
+  }
+
+  //Method to check if the GridTile has an AnimatedSprite in it
+  public boolean hasSprite(){
+    if(sprite == null){
       return false;
     }
     return true;

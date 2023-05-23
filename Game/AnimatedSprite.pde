@@ -8,9 +8,10 @@
  
 public class AnimatedSprite extends Sprite{
   
+    private String jsonPath;
     private ArrayList<PImage> animation;
-    private int w;
-    private int h;
+    // private int w;
+    // private int h;
     private int len;
     private float i_bucket;
 
@@ -20,14 +21,16 @@ public class AnimatedSprite extends Sprite{
   // Constructor for AnimatedSprite with Spritesheet (Must use the TexturePacker to make the JSON)
   // https://www.codeandweb.com/texturepacker
   public AnimatedSprite(String png, float x, float y, String json) {
-    super("none", x, y, 1.0, true);
-
+    super(png, x, y, 1.0, true);
+    
+    this.jsonPath = json;
     this.animation = new ArrayList<PImage>();
  
     spriteData = loadJSONObject(json);
     spriteSheet = loadImage(png);
     JSONArray frames = spriteData.getJSONArray("frames");
     
+    System.out.println("Loading Animated Sprite...");
     for(int i=0; i<frames.size(); i++){
 
       JSONObject frame = frames.getJSONObject(i);
@@ -43,17 +46,23 @@ public class AnimatedSprite extends Sprite{
       PImage img = spriteSheet.get(sX, sY, sW, sH);
       animation.add(img);
 
-      this.w = this.animation.get(0).width;
-      this.h = this.animation.get(0).height;
+      // this.w = this.animation.get(0).width;
+      // this.h = this.animation.get(0).height;
       this.len = this.animation.size();
       this.i_bucket = 0;
     }
+    super.setW(this.animation.get(0).width);
+    super.setH(this.animation.get(0).height);
+    super.setLeft(x);
+    super.setTop(y);
+    //System.out.println("AS w: " + super.getW() + ",h: " + super.getH());
+
   }
 
   //Overriden method: Displays the correct frame of the Sprite image on the screen
   public void show() {
     int index = (int) Math.floor(Math.abs(this.i_bucket)) % this.len;
-    image(animation.get(index), super.getX(), super.getY());
+    image(animation.get(index), super.getLeft(), super.getTop());
     //System.out.println("Pos: "+ super.getX() +"," + super.getY());
   } 
 
@@ -63,48 +72,52 @@ public class AnimatedSprite extends Sprite{
     show();
   }
 
-  //animated method that makes the Sprite move to the right-left
-  public void animateHorizontal(float horizontalSpeed, float animationSpeed, boolean wraparound) {
-
+  //Method that makes animated sprite move in any straight line
+  public void animateMove(float hSpeed, float vSpeed, float animationSpeed, boolean wraparound){
+    
     //adjust speed & frames
     animate(animationSpeed);
-    super.move( (int) (horizontalSpeed * 10), 0 );
+    super.move( (int) (hSpeed * 10), (int) (vSpeed * 10) );
   
     //wraparound sprite if goes off the right or left
     if(wraparound){
       wraparoundHorizontal();
-    }
-
-  }
-
-  //animated method that makes the Sprite move down-up
-  public void animateVertical(float verticalSpeed, float animationSpeed, boolean wraparound) {
-
-    //adjust speed & frames
-    animate(animationSpeed);
-    super.move( 0, (int) (verticalSpeed * 10));
-  
-    //wraparound sprite if goes off the bottom or top
-    if(wraparound){
       wraparoundVertical();
     }
   }
 
+  //animated method that makes the Sprite move to the right-left
+  public void animateHorizontal(float horizontalSpeed, float animationSpeed, boolean wraparound) {
+    animateMove(horizontalSpeed, 0, animationSpeed, wraparound);
+  }
+
+  //animated method that makes the Sprite move down-up
+  public void animateVertical(float verticalSpeed, float animationSpeed, boolean wraparound) {
+    animateMove(0, verticalSpeed, animationSpeed, wraparound);
+  }
+
+  //Accessor method for the JSON path
+  public String getJsonPath(){
+    return this.jsonPath;
+  }
+
+  //---------------------PRIVATE HELPER METHODS--------------------------//
+
   //wraparound sprite if goes off the right-left
   private void wraparoundHorizontal(){
-    if ( super.getX() > width ) {
-      super.setX( -this.w );
-    } else if ( super.getX() < -width ){
-      super.setX( width );
+    if ( super.getLeft() > width ) {
+      super.setLeft( -super.getW() );
+    } else if ( super.getRight() < -width ){
+      super.setRight( width );
     }
   }
 
   //wraparound sprite if goes off the top-bottom
   private void wraparoundVertical(){
-    if ( super.getY() > height ) {
-      super.setY( -this.h );
-    } else if ( super.getY() < -height ){
-      super.setY( height );
+    if ( super.getTop() > height ) {
+      super.setTop( -super.getH() );
+    } else if ( super.getBottom() < -height ){
+      super.setBottom( height );
     }
   }
 

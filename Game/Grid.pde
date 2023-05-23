@@ -123,6 +123,7 @@ public class Grid{
     return board[r][c];
   }
 
+  //------------------PImage Methods ---------------//
   //Method that sets the image at a particular tile in the grid & displays it
   public void setTileImage(GridLocation loc, PImage pi){
     GridTile tile = getTile(loc);
@@ -149,6 +150,42 @@ public class Grid{
     GridTile tile = getTile(loc);
     return tile.hasImage();
   }
+
+  //------------------AnimatedSprite Methods ---------------//
+  //Method that sets the Sprite at a particular tile in the grid & displays it
+  public void setTileSprite(GridLocation loc, AnimatedSprite sprite){
+    GridTile tile = getTile(loc);
+    if(sprite == null){
+      tile.setSprite(null);
+      //System.out.println("Cleared tile @ " + loc);
+      return;
+    }
+    sprite.setLeft(getX(loc));
+    sprite.setTop(getY(loc));
+    tile.setSprite(sprite);
+    sprite.animateMove(0.0, 0.0, 1.0, true);
+    //System.out.println("Succcessfully set tile @ " + loc);
+  }
+
+  //Method that clears the tile image
+  public void clearTileSprite(GridLocation loc){
+    setTileSprite(loc,null);
+  }
+
+  //Method that returns the PImage associated with a particular Tile
+  public AnimatedSprite getTileSprite(GridLocation loc){
+    GridTile tile = getTile(loc);
+    //System.out.println("Grid.getTileSprite() " + tile.getSprite());
+    return tile.getSprite();
+  }
+
+  //Method that returns if a Tile has a PImage
+  public boolean hasTileSprite(GridLocation loc){
+    GridTile tile = getTile(loc);
+    return tile.hasSprite();
+  }
+
+
 
   public void pause(final int milliseconds) {
     try {

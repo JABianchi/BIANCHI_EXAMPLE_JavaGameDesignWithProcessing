@@ -13,6 +13,7 @@ PImage bg;
 PImage player1;
 PImage player2;
 PImage enemy;
+AnimatedSprite enemySprite;
 PImage endScreen;
 String titleText = "Zapdos in the Sky";
 String extraText = "Watch out for Articuno";
@@ -39,8 +40,11 @@ void setup() {
   player1 = loadImage("images/zapdos.png");
   player1.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
   endScreen = loadImage("images/youwin.png");
-  enemy = loadImage("images/articuno.png");
-  enemy.resize(100,100);
+  // enemy = loadImage("images/articuno.png");
+  // enemy.resize(100,100);
+  enemySprite = new AnimatedSprite("sprites/horse_run.png", 0.0, 0.0, "sprites/horse_run.json");
+  grid.pause(100);
+ 
 
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
@@ -51,6 +55,7 @@ void setup() {
 
   println("Game started...");
 
+  imageMode(CORNER);    //Set Images to read coordinates at corners
   //fullScreen();   //only use if not using a specfic bg image
 }
 
@@ -161,7 +166,7 @@ public void updateScreen(){
   GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
   
-  //Loop through all the Tiles and display its images
+  //Loop through all the Tiles and display its images/sprites
   for(int r=0; r<grid.getNumRows(); r++){
     for(int c=0; c<grid.getNumCols(); c++){
 
@@ -171,6 +176,10 @@ public void updateScreen(){
       //Check if the tile has an image
       if(grid.hasTileImage(tempLoc)){
         grid.setTileImage(tempLoc,grid.getTileImage(tempLoc));
+      }
+      if(grid.hasTileSprite(tempLoc)){
+        //System.out.println(tempLoc + " has a Sprite " + grid.getTileSprite(tempLoc));
+        grid.setTileSprite(tempLoc,grid.getTileSprite(tempLoc));
       }
     }
   }
@@ -194,8 +203,10 @@ public void populateSprites(){
     double rando = Math.random();
 
     //10% of the time, decide to add an image to a Tile
-    if(rando < 0.15){
-      grid.setTileImage(new GridLocation(r,lastCol), enemy);
+    if(rando < 0.1){
+      //grid.setTileImage(new GridLocation(r,lastCol), enemy);
+      //System.out.println("Populating in row " + r);
+      grid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
     }
 
   }
@@ -214,23 +225,22 @@ public void moveSprites(){
       GridLocation loc = new GridLocation(r, c);
       GridLocation newLoc = new GridLocation(r, c - 1);
       
-      if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
-  
-        // //Collisions
-        // if(enemy.equals(grid.getTileImage(loc)) && player1.equals(grid.getTileImage(newLoc))){
-        //   //handleCollision(loc);
-        //   System.out.println("Collision");
-        //   //grid.setImage(loc, null);
-        // } else {
+      // if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
+      if(grid.hasTileSprite(loc) ){
+        //System.out.println("Moving sprite found at loc " + loc);
 
         //Get image from current location
-        PImage img = grid.getTileImage(loc);
+        //PImage img = grid.getTileImage(loc);
+        AnimatedSprite sprite = grid.getTileSprite(loc);
 
         //Set image to new Location 
-        grid.setTileImage(newLoc, img);
+        //grid.setTileImage(newLoc, img);
+        //System.out.println("Moving to newLoc" + newLoc);
+        grid.setTileSprite(newLoc, sprite);
 
         //Erase image from old location
-        grid.clearTileImage(loc);
+        //grid.clearTileImage(loc);
+        grid.clearTileSprite(loc);
 
         //System.out.println(loc + " " + grid.hasTileImage(loc));
       }
@@ -238,6 +248,7 @@ public void moveSprites(){
       //What if at the first column?
       if (c == 1) {
         grid.clearTileImage(newLoc);
+        grid.clearTileSprite(newLoc);
       }
 
     }
