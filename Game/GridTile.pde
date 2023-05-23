@@ -2,8 +2,8 @@
  * GridTiles have distinguishable marks that will be printed out to the console for easy visualization of a 2D array
  * GridTiles can indicate if they have been "captured", colored, or are displaying an image
  * Authors: Joel Bianchi, Naomi Gaylor, Ezzeldin Moussa
- * Last Edit: 5/17/2023
- * Edited to be superclass of HexTile
+ * Last Edit: 5/22/2023
+ * Edited to be superclass of HexTile, included hasImage() function
  */
 
 import java.awt.Color;
@@ -77,6 +77,13 @@ public class GridTile{
   //Accessor method that returns the PImage stored in the GridTile
   public PImage getImage(){
     return pi;
+  }
+
+  public boolean hasImage(){
+    if(pi == null){
+      return false;
+    }
+    return true;
   }
 
   //method to "capture" a tile by changing its color
