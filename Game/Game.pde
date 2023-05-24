@@ -165,27 +165,10 @@ public void updateScreen(){
   //Display the Player1 image
   GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
-  
-  //Loop through all the Tiles and display its images/sprites
-  for(int r=0; r<grid.getNumRows(); r++){
-    for(int c=0; c<grid.getNumCols(); c++){
-
-      //Store temporary GridLocation
-      GridLocation tempLoc = new GridLocation(r,c);
-      
-      //Check if the tile has an image
-      if(grid.hasTileImage(tempLoc)){
-        grid.setTileImage(tempLoc,grid.getTileImage(tempLoc));
-      }
-      if(grid.hasTileSprite(tempLoc)){
-        //System.out.println(tempLoc + " has a Sprite " + grid.getTileSprite(tempLoc));
-        grid.setTileSprite(tempLoc,grid.getTileSprite(tempLoc));
-      }
-    }
-  }
-  
+    
   //update other screen elements
-
+  grid.showImages();
+  grid.showSprites();
 
 
 }
@@ -225,6 +208,7 @@ public void moveSprites(){
       GridLocation loc = new GridLocation(r, c);
       GridLocation newLoc = new GridLocation(r, c - 1);
       
+      // Check if the current tile has an image and is NOT the player1
       // if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
       if(grid.hasTileSprite(loc) ){
         //System.out.println("Moving sprite found at loc " + loc);
@@ -245,7 +229,7 @@ public void moveSprites(){
         //System.out.println(loc + " " + grid.hasTileImage(loc));
       }
 
-      //What if at the first column?
+      //What is at the first column?
       if (c == 1) {
         grid.clearTileImage(newLoc);
         grid.clearTileSprite(newLoc);
