@@ -200,43 +200,42 @@ public void populateSprites(){
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
 
-  //Loop through all of the cells in the grid
-  for (int r = 0; r < grid.getNumRows(); r++) {
-    for (int c = 1; c < grid.getNumCols(); c++) {
+  //loop through all of the grid tiles
+  for(int r=0; r<grid.getNumRows(); r++){
+    for (int c=0; c<grid.getNumCols(); c++){
 
-      //Store the 2 locations to move
-      GridLocation loc = new GridLocation(r, c);
-      GridLocation newLoc = new GridLocation(r, c - 1);
-      
-      // Check if the current tile has an image and is NOT the player1
-      // if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
-      if(grid.hasTileSprite(loc) ){
-        //System.out.println("Moving sprite found at loc " + loc);
+      //Store GridLocation
+      GridLocation loc = new GridLocation(r,c);
 
-        //Get image from current location
-        //PImage img = grid.getTileImage(loc);
-        AnimatedSprite sprite = grid.getTileSprite(loc);
-
-        //Set image to new Location 
-        //grid.setTileImage(newLoc, img);
-        //System.out.println("Moving to newLoc" + newLoc);
-        grid.setTileSprite(newLoc, sprite);
-
-        //Erase image from old location
-        //grid.clearTileImage(loc);
+      //clear out the horses in the first column
+      if(c==0){
         grid.clearTileSprite(loc);
-
-        //System.out.println(loc + " " + grid.hasTileImage(loc));
       }
 
-      //What is at the first column?
-      if (c == 1) {
-        grid.clearTileImage(newLoc);
-        grid.clearTileSprite(newLoc);
+      //only move if i'm not in the first column
+      if(c!=0){
+        GridLocation newLoc = new GridLocation(r,c-1);
+
+        //check if there is an image/sprite
+        if(grid.hasTileSprite(loc)){
+          //move the sprite to the new location
+          grid.setTileSprite( newLoc, grid.getTileSprite(loc) );
+          
+          //clear the sprite from old loc
+          grid.clearTileSprite(loc);
+
+        }
+
+
       }
+      
+
+
+      //
 
     }
   }
+
 }
 
 
