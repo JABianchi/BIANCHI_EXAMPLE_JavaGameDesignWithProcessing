@@ -223,16 +223,8 @@ public void moveSprites(){
           
           //clear the sprite from old loc
           grid.clearTileSprite(loc);
-
         }
-
-
       }
-      
-
-
-      //
-
     }
   }
 
