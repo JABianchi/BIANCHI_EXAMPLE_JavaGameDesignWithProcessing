@@ -1,8 +1,9 @@
 /* Sprite class - to create objects that move around with their own properties
  * Inspired by Daniel Shiffman's p5js Animated Sprite tutorial
  * Author: Joel Bianchi
- * Last Edit: 5/23/22
+ * Last Edit: 5/27/22
  * Modified to account for picture coordinates at Top, Left corner
+ * Added Constructor #3
  */
 
 public class Sprite {
@@ -37,6 +38,11 @@ public class Sprite {
   // Simpler Constructor for Non-Animated Sprite
   public Sprite(String spriteImgPath, float x, float y) {
     this(spriteImgPath, 1.0, x, y, false);
+  }
+
+  //Constructor #3: Only pass in the image
+  public Sprite(String spriteImgPath){
+    this(spriteImgPath, 0.0, 0.0);
   }
 
 
@@ -153,6 +159,7 @@ public class Sprite {
     return this.spriteImg;
   }
 
+
   // //Method to check if 2 Sprites are the same (based on String)
   // public boolean equals(Sprite otherSprite){
   //   if(this.spriteImgPath.equals(otherSprite.getImagePath())){
@@ -163,7 +170,7 @@ public class Sprite {
 
   //Method to check if 2 Sprites are the same (based on PImage)
   public boolean equals(Sprite otherSprite){
-    if(this.spriteImg.equals(otherSprite.getImage())){
+    if(this.spriteImgPath != null && this.spriteImgPath.equals(otherSprite.getImagePath())){
       return true;
     }
     return false;
