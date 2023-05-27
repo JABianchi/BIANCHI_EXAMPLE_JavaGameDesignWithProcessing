@@ -216,6 +216,9 @@ public void moveSprites(){
       if(c!=0){
         GridLocation newLoc = new GridLocation(r,c-1);
 
+        //check collision
+        checkCollision(loc, newLoc);
+
         //check if there is an image/sprite
         if(grid.hasTileSprite(loc)){
           //move the sprite to the new location
@@ -231,8 +234,29 @@ public void moveSprites(){
 }
 
 
-//Method to handle the collisions between Sprites on the Screen
-public void handleCollisions(){
+//Method to check if there is a collision between Sprites on the Screen
+public void checkCollision(GridLocation loc, GridLocation newLoc){
+  // Check if the new location you’re moving to holds the player or another object.
+  PImage pi = grid.getTileImage(loc);
+  AnimatedSprite sprite = grid.getTileSprite(loc);
+  //System.out.println("S: "+ sprite + "/tExS: " + exampleSprite);
+
+  //player1
+  // if(player1.equals(pi)){
+  //   System.out.println("Collide");
+  // }
+  if(sprite != null && exampleSprite.equals(sprite)){
+    System.out.println("SpriteCollision\t" + newLoc);
+    grid.setTileSprite(newLoc, null);
+  }
+
+
+
+  // If not, then no collision has occurred, and there's nothing for you to do. 
+  // If the image is something you want to get (like “coin.png”), then increment timesGet. 
+  // If the image is something you want to avoid (like “fireball.png”), then increment a counter timesAvoid. 
+  // Either way, remove the image at that original location using the clearTileImage() or clearTileSprite() method from the Grid class.
+
 
 
 }

@@ -18,9 +18,9 @@ public class AnimatedSprite extends Sprite{
     JSONObject spriteData;
     PImage spriteSheet;
 
-  // Constructor for AnimatedSprite with Spritesheet (Must use the TexturePacker to make the JSON)
+  // Constructor #1 for AnimatedSprite with Spritesheet (Must use the TexturePacker to make the JSON)
   // https://www.codeandweb.com/texturepacker
-  public AnimatedSprite(String png, float x, float y, String json) {
+  public AnimatedSprite(String png, String json, float x, float y ) {
     super(png, x, y, 1.0, true);
     
     this.jsonPath = json;
@@ -58,6 +58,17 @@ public class AnimatedSprite extends Sprite{
     //System.out.println("AS w: " + super.getW() + ",h: " + super.getH());
 
   }
+
+  // Constructor #2 taking in images and json only
+  public AnimatedSprite(String png, String json) {
+    this(png, 0.0, 0.0, json);
+  }
+
+  // Legacy Constructor for 2022 version
+    public AnimatedSprite(String png, float x, float y, String json) {
+      this(png, json, x, y);
+    }
+
 
   //Overriden method: Displays the correct frame of the Sprite image on the screen
   public void show() {
