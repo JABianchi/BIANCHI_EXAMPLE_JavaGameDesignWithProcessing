@@ -17,9 +17,14 @@ AnimatedSprite enemySprite;
 PImage endScreen;
 String titleText = "Zapdos in the Sky";
 String extraText = "Watch out for Articuno";
+String player1File = "images/zapdos.png";
+String bgFile = "images/sky.png";
+String endFile = "images/youwin.png";
 AnimatedSprite exampleSprite;
 boolean doAnimation;
 //SoundFile song;
+
+int health = 3;
 
 int player1Row = 3;
 int player1Col = 4;
@@ -35,11 +40,11 @@ void setup() {
   surface.setTitle(titleText);
 
   //Load images used
-  bg = loadImage("images/sky.png");
+  bg = loadImage(bgFile);
   bg.resize(1500,500);
-  player1 = loadImage("images/zapdos.png");
+  player1 = loadImage(player1File);
   player1.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
-  endScreen = loadImage("images/youwin.png");
+  endScreen = loadImage(endFile);
   // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
   enemySprite = new AnimatedSprite("sprites/horse_run.png", 0.0, 0.0, "sprites/horse_run.json");
@@ -148,7 +153,7 @@ public void updateTitleBar(){
 
   if(!isGameOver()) {
     //set the title each loop
-    surface.setTitle(titleText + "    " + extraText);
+    surface.setTitle(titleText + "    " + extraText + " " + health);
 
     //adjust the extra text as desired
   
@@ -214,15 +219,15 @@ public void moveSprites(){
 
       //only move if i'm not in the first column
       if(c!=0){
-        GridLocation newLoc = new GridLocation(r,c-1);
+        GridLocation nextLoc = new GridLocation(r,c-1);
 
-        //check collision
-        checkCollision(loc, newLoc);
+        //check if collision with player1
+        checkCollision(loc, nextLoc);
 
         //check if there is an image/sprite
         if(grid.hasTileSprite(loc)){
           //move the sprite to the new location
-          grid.setTileSprite( newLoc, grid.getTileSprite(loc) );
+          grid.setTileSprite( nextLoc, grid.getTileSprite(loc) );
           
           //clear the sprite from old loc
           grid.clearTileSprite(loc);
@@ -235,27 +240,40 @@ public void moveSprites(){
 
 
 //Method to check if there is a collision between Sprites on the Screen
-public void checkCollision(GridLocation loc, GridLocation newLoc){
-  // Check if the new location you’re moving to holds the player or another object.
-  PImage pi = grid.getTileImage(loc);
-  AnimatedSprite sprite = grid.getTileSprite(loc);
-  //System.out.println("S: "+ sprite + "/tExS: " + exampleSprite);
+public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
 
-  //player1
-  // if(player1.equals(pi)){
-  //   System.out.println("Collide");
-  // }
-  if(sprite != null && exampleSprite.equals(sprite)){
-    System.out.println("SpriteCollision\t" + newLoc);
-    grid.setTileSprite(newLoc, null);
+  //check current location first
+  PImage image = grid.getTileImage(loc);
+  AnimatedSprite sprite = grid.getTileSprite(loc);
+  if(image == null && sprite == null){
+    return false;
+  }
+
+  //check next location
+  PImage nextImage = grid.getTileImage(nextLoc);
+  AnimatedSprite nextSprite = grid.getTileSprite(nextLoc);
+  if(nextImage == null && nextSprite == null){
+    return false;
+  }
+
+  //check if articuno hit my player
+  if(enemySprite.equals(sprite) && player1.equals(nextImage)){
+    System.out.println("Articuno hits Zapdos");
+
+    //clear out the enemy if it hits
+    grid.clearTileSprite(loc);
+
+    //lose health
+    health--;
+
+
   }
 
 
+  return true;
 
-  // If not, then no collision has occurred, and there's nothing for you to do. 
-  // If the image is something you want to get (like “coin.png”), then increment timesGet. 
-  // If the image is something you want to avoid (like “fireball.png”), then increment a counter timesAvoid. 
-  // Either way, remove the image at that original location using the clearTileImage() or clearTileSprite() method from the Grid class.
+
+ 
 
 
 
@@ -263,6 +281,9 @@ public void checkCollision(GridLocation loc, GridLocation newLoc){
 
 //method to indicate when the main game is over
 public boolean isGameOver(){
+  if(health <0){
+    return true;
+  }
   return false; //by default, the game is never over
 }
 
