@@ -3,12 +3,13 @@
  * https://free-tex-packer.com/app/
  * Inspired by Daniel Shiffman's p5js Animated Sprite tutorial: https://youtu.be/3noMeuufLZY
  * Author: Joel Bianchi
- * Last Edit: 5/22/2023
+ * Last Edit: 5/31/2023
+ * Edited jsonFile renamed to jsonFile
  */
  
 public class AnimatedSprite extends Sprite{
   
-    private String jsonPath;
+    private String jsonFile;
     private ArrayList<PImage> animation;
     // private int w;
     // private int h;
@@ -23,7 +24,7 @@ public class AnimatedSprite extends Sprite{
   public AnimatedSprite(String png, String json, float x, float y ) {
     super(png, x, y, 1.0, true);
     
-    this.jsonPath = json;
+    this.jsonFile = json;
     this.animation = new ArrayList<PImage>();
  
     spriteData = loadJSONObject(json);
@@ -108,8 +109,8 @@ public class AnimatedSprite extends Sprite{
   }
 
   //Accessor method for the JSON path
-  public String getJsonPath(){
-    return this.jsonPath;
+  public String getjsonFile(){
+    return this.jsonFile;
   }
 
   //---------------------PRIVATE HELPER METHODS--------------------------//
