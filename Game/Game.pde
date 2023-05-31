@@ -196,10 +196,7 @@ public void populateSprites(){
       //System.out.println("Populating in row " + r);
       grid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
     }
-
   }
-
-
 }
 
 //Method to move around the enemies/sprites on the screen
@@ -256,27 +253,29 @@ public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
     return false;
   }
 
-  //check if articuno hit my player
+  //check if enemy runs into player
   if(enemySprite.equals(sprite) && player1.equals(nextImage)){
-    System.out.println("Articuno hits Zapdos");
+    System.out.println("EnemySprite hits Zapdos");
 
-    //clear out the enemy if it hits
+    //clear out the enemy if it hits the player
     grid.clearTileSprite(loc);
 
     //lose health
     health--;
-
-
   }
 
+  //check if a player collides into enemy
+  if(player1.equals(image) && enemySprite.equals(nextSprite)){
+    System.out.println("EnemySprite ran into Zapdos!");
+
+    //Remove the image at that original location using the clearTileImage() or clearTileSprite() method from the Grid class.
+    grid.clearTileSprite(nextLoc);
+
+    //Lose 1 Health from player1
+    health--;
+  }
 
   return true;
-
-
- 
-
-
-
 }
 
 //method to indicate when the main game is over
