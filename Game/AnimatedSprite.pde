@@ -2,9 +2,10 @@
  * Designed to be used with Spritesheets & JSON Array files from TexturePacker software: 
  * https://free-tex-packer.com/app/
  * Inspired by Daniel Shiffman's p5js Animated Sprite tutorial: https://youtu.be/3noMeuufLZY
- * Author: Joel Bianchi
+ * Author: Joel Bianchi, Aiden Sing, Tahlei Richardson
  * Last Edit: 5/31/2023
  * Edited jsonFile renamed to jsonFile
+ * Variable to track animation speed
  */
  
 public class AnimatedSprite extends Sprite{
@@ -14,7 +15,8 @@ public class AnimatedSprite extends Sprite{
     // private int w;
     // private int h;
     private int len;
-    private float i_bucket;
+    private float iBucket;
+    private float aSpeed; //variable to track how quickly the animation images cycle
 
     JSONObject spriteData;
     PImage spriteSheet;
@@ -50,7 +52,8 @@ public class AnimatedSprite extends Sprite{
       // this.w = this.animation.get(0).width;
       // this.h = this.animation.get(0).height;
       this.len = this.animation.size();
-      this.i_bucket = 0;
+      this.iBucket = 0.0;
+      this.aSpeed = 0.0;
     }
     super.setW(this.animation.get(0).width);
     super.setH(this.animation.get(0).height);
@@ -73,14 +76,14 @@ public class AnimatedSprite extends Sprite{
 
   //Overriden method: Displays the correct frame of the Sprite image on the screen
   public void show() {
-    int index = (int) Math.floor(Math.abs(this.i_bucket)) % this.len;
+    int index = (int) Math.floor(Math.abs(this.iBucket)) % this.len;
     image(animation.get(index), super.getLeft(), super.getTop());
     //System.out.println("Pos: "+ super.getX() +"," + super.getY());
   } 
 
   //Method to cycle through the images of the animated sprite
   public void animate(float animationSpeed){
-    i_bucket +=  animationSpeed * 1;
+    iBucket +=  animationSpeed * aSpeed;
     show();
   }
 
@@ -109,9 +112,15 @@ public class AnimatedSprite extends Sprite{
   }
 
   //Accessor method for the JSON path
-  public String getjsonFile(){
+  public String getJsonFile(){
     return this.jsonFile;
   }
+  
+  //Mutator method for the speed of the animation -Aiden Sing & Tahlei Richardson, 2023
+  public void setAnimationSpeed(float aSpeed) {
+    this.aSpeed = aSpeed;
+  }
+  
 
   //---------------------PRIVATE HELPER METHODS--------------------------//
 
