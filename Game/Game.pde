@@ -48,6 +48,7 @@ void setup() {
   // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
   enemySprite = new AnimatedSprite("sprites/horse_run.png", 0.0, 0.0, "sprites/horse_run.json");
+  enemySprite.resize(100,75);
   grid.pause(100);
  
 
@@ -301,11 +302,13 @@ public void endGame(){
 public void exampleAnimationSetup(){  
   int i = 2;
   exampleSprite = new AnimatedSprite("sprites/horse_run.png", 50.0, i*75.0, "sprites/horse_run.json");
+  //exampleSprite.resize(200,200);
 }
 
 //example method that animates the horse Sprites
 public void checkExampleAnimation(){
   if(doAnimation){
+
     exampleSprite.animateHorizontal(5.0, 1.0, true);
   }
 }
