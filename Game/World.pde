@@ -1,7 +1,8 @@
 /* World Class - Used to describe the screen of a pixel-based game
  * Authors: Joel Bianchi, Nathan Santos, Clive Sherwood
- * Last Edit: 5/31/2023
+ * Last Edit: 6/5/2023
  * Modified for Processing
+ * Can add copied sprites
  */
 
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class World {
 	public World(String name) {
 		this(name, null);
 	}
+    //World Constructor #3
+	public World() {
+		this("default world", null);
+	}
 
 
     //WORLD METHODS
@@ -37,11 +42,10 @@ public class World {
 
     }
 
+    //WORLD SPRITE METHODS
     public ArrayList<AnimatedSprite> getSprites(){
         return sprites;
     }
-
-    //WORLD SPRITE METHODS
 
     //method to add a sprite to the world
 	public void addSprite(AnimatedSprite sprite) {
@@ -50,12 +54,25 @@ public class World {
 		}
 	}
 
+    //method to add a copy of a sprite to the world
+	public void addSpriteCopy(AnimatedSprite sprite) {
+		sprites.add(sprite.copy());
+	}
+
+
 	//method to remove a sprite from the world
 	public void removeSprite(AnimatedSprite sprite) {
 		if (sprites.contains(sprite)) {
 			sprites.remove(sprite);
 		}
 	}
+
+    //method to print out list of sprites
+    public void printSprites(){
+        for(Sprite sprite: sprites){
+            System.out.println(sprite);
+        }
+    }
 
     //WORLD TIME METHODS
     public long getWorldTime(){
