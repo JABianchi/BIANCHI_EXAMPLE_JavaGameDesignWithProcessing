@@ -173,8 +173,8 @@ public class Sprite {
     return this.spriteImg;
   }
 
-  //Method to copy a Sprite
-  public Sprite copy(){
+  //Method to copy a Sprite to a specific location
+  public Sprite copyTo(float x, float y){
 
     PImage si = this.spriteImg;
     String sif = this.spriteImgFile;
@@ -186,13 +186,17 @@ public class Sprite {
     float h = this.h;
     boolean ia = this.isAnimated;
     
-    Sprite sp = new Sprite(sif, 1.0, cx, cy, ia);
+    Sprite sp = new Sprite(sif, 1.0, x, y, ia);
     sp.setSpeed(sx,sy);
     sp.setW(w);
     sp.setH(h);
 
     return sp;
 
+  }
+  //Method to copy a Sprite to same location
+  public Sprite copy(){
+    return copyTo(this.centerX, this.centerY);
   }
 
   //Method to check if 2 Sprites are the same (based on PImage)

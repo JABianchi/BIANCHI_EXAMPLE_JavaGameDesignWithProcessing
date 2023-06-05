@@ -102,6 +102,16 @@ public class AnimatedSprite extends Sprite{
     animateMove(0, verticalSpeed, animationSpeed, wraparound);
   }
 
+  //NIKO + JAIDEN
+  public void animateToPlayer(AnimatedSprite player, float animationSpeed, boolean wraparound) {
+    float xDifference = player.getCenterX() - this.getCenterX();
+    float yDifference = player.getCenterY() - this.getCenterY();
+    if ((xDifference < 100 && xDifference > -100) && (yDifference < 150 && yDifference > -150)) {
+      animateMove(xDifference/300.0, yDifference/300.0, animationSpeed, wraparound);
+    }
+    animateMove(xDifference/1000.0, yDifference/1000.0, animationSpeed, wraparound);
+  }
+
   //Accessor method for the JSON path
   public String getJsonFile(){
     return this.jsonFile;
@@ -124,6 +134,12 @@ public class AnimatedSprite extends Sprite{
   public AnimatedSprite copy(){
     //super.copy();
     return new AnimatedSprite(this.pngFile, this.jsonFile, super.getLeft(), super.getTop(), this.aSpeed);
+  }
+  
+  //Method to copy an AnimatedSprite to a specific location
+  public AnimatedSprite copyTo(float x, float y){
+    //super.copy();
+    return new AnimatedSprite(this.pngFile, this.jsonFile, x, y, this.aSpeed);
   }
   
 

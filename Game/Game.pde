@@ -30,7 +30,7 @@ int health = 3;
 int player1Row = 3;
 int player1Col = 4;
 
-World world = new World("popup", bg);
+World world = new World("test", bg);
 
 
 
@@ -188,6 +188,7 @@ public void updateScreen(){
   //update other screen elements
   grid.showImages();
   grid.showSprites();
+  world.showSprites();
 
 
 }
