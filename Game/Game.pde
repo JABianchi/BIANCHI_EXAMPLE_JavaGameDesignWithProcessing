@@ -12,6 +12,8 @@ String extraText = "Watch out for Articuno";
 
 //Screens
 Screen currentScreen;
+World currentWorld;
+Grid currentGrid;
 
 //Splash Screen Variables
 Screen splashScreen;
@@ -160,7 +162,9 @@ void mouseClicked(){
   
   //check if click was successful
   System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
-  System.out.println("Grid location: " + skyGrid.getGridLocation());
+  if(currentGrid != null){
+    System.out.println("Grid location: " + currentGrid.getGridLocation());
+  }
 
   //what to do if clicked? (Make player1 jump back)
   GridLocation clickedLoc = skyGrid.getGridLocation();
@@ -173,8 +177,10 @@ void mouseClicked(){
   //Toggle the animation on & off
   doAnimation = !doAnimation;
   System.out.println("doAnimation: " + doAnimation);
-  skyGrid.setMark("X",skyGrid.getGridLocation());
-  
+  if(currentGrid != null){
+    currentGrid.setMark("X",currentGrid.getGridLocation());
+  }
+
 }
 
 
@@ -208,6 +214,7 @@ public void updateScreen(){
 
   //skyGrid Screen Updates
   if(currentScreen == skyGrid){
+    currentGrid = skyGrid;
 
     //Display the Player1 image
     GridLocation player1Loc = new GridLocation(player1Row,player1Col);
