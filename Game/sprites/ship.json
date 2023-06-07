@@ -1,0 +1,115 @@
+{
+  "frames": [
+    {
+      "filename": "3.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 392,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 160,
+        "w": 392,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 576,
+        "h": 576
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "0.png",
+      "frame": {
+        "x": 392,
+        "y": 0,
+        "w": 368,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 24,
+        "y": 160,
+        "w": 368,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 576,
+        "h": 576
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "1.png",
+      "frame": {
+        "x": 760,
+        "y": 0,
+        "w": 368,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 24,
+        "y": 160,
+        "w": 368,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 576,
+        "h": 576
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "2.png",
+      "frame": {
+        "x": 1128,
+        "y": 0,
+        "w": 368,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 24,
+        "y": 160,
+        "w": 368,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 576,
+        "h": 576
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "ship.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1496,
+      "h": 256
+    },
+    "scale": 4
+  }
+}

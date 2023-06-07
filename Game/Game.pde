@@ -1,38 +1,48 @@
 /* Game Class Starter File
- * Authors: _____________________
- * Last Edit: 5/22/2023
+ * Authors: Joel A. Bianchi
+ * Last Edit: 6/6/2023
  */
 
 //import processing.sound.*;
 
 //GAME VARIABLES
 private int msElapsed = 0;
-Grid grid = new Grid(5,15);
-
-//HexGrid hGrid = new HexGrid(3);
-PImage bg;
-PImage player1;
-PImage player2;
-PImage enemy;
-AnimatedSprite enemySprite;
-PImage endScreen;
 String titleText = "Zapdos in the Sky";
 String extraText = "Watch out for Articuno";
+
+//Screens
+Screen currentScreen;
+
+//Splash Screen Variables
+Screen splashScreen;
+String splashBgFile = "images/zapdos_splash.jpg";
+PImage splashBg;
+
+//Sky Screen Variables
+Grid skyGrid;
+String skyBgFile = "images/sky.png";
+PImage skyBg;
+
+PImage player1;
 String player1File = "images/zapdos.png";
-String bgFile = "images/sky.png";
-String endFile = "images/youwin.png";
-AnimatedSprite exampleSprite;
-boolean doAnimation;
-//SoundFile song;
-
-int health = 3;
-
 int player1Row = 3;
 int player1Col = 4;
+int health = 3;
 
-World world = new World("test", bg);
+PImage enemy;
+AnimatedSprite enemySprite;
 
+AnimatedSprite exampleSprite;
+boolean doAnimation;
 
+//EndScreen variables
+World endScreen;
+PImage endBg;
+String endBgFile = "images/youwin.png";
+
+//Example Variables
+//HexGrid hGrid = new HexGrid(3);
+//SoundFile song;
 
 
 //Required Processing method that gets run once
@@ -44,37 +54,47 @@ void setup() {
   //Set the title on the title bar
   surface.setTitle(titleText);
 
-  //Load images used
-  bg = loadImage(bgFile);
-  bg.resize(1500,500);
+  //Load BG images used
+  splashBg = loadImage(splashBgFile);
+  splashBg.resize(1500,500);
+  skyBg = loadImage(skyBgFile);
+  skyBg.resize(1500,500);
+  endBg = loadImage(endBgFile);
+  endBg.resize(1500,500);
+
+  //setup the screens/worlds/grids in the Game
+  splashScreen = new Screen("splash", splashBg);
+  skyGrid = new Grid("sky", skyBg, 5,15);
+  endScreen = new World("end", endBg);
+  currentScreen = splashScreen;
+
+  //setup the sprites  
   player1 = loadImage(player1File);
-  player1.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
-  endScreen = loadImage(endFile);
+  player1.resize(skyGrid.getTileWidthPixels(),skyGrid.getTileHeightPixels());
   // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
-  enemySprite = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json");
-  enemySprite.resize(100,75);
-  grid.pause(100);
- 
+  enemySprite = new AnimatedSprite("sprites/ship.png", "sprites/ship.json");
+  enemySprite.resize(75,50);
+  exampleSprite = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json");
+  exampleAnimationSetup();
 
+  //add sprites to the Screens
+  System.out.println("Adding sprites to sky world...");
+  // skyGrid.addSpriteCopyTo(enemySprite, 1000,100);
+  // skyGrid.addSpriteCopyTo(enemySprite, 900, 400);
+  skyGrid.printSprites();
+  System.out.println("Done adding sprites to sky world..");
+
+
+  
+  //Other Setup
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
   // song.play();
   
-  //Animation & Sprite setup
-  exampleAnimationSetup();
-
-  println("Game started...");
-
   imageMode(CORNER);    //Set Images to read coordinates at corners
   //fullScreen();   //only use if not using a specfic bg image
-
-  System.out.println("Adding sprites to world...");
-  world.addSpriteCopy(enemySprite);
-  world.addSpriteCopy(enemySprite);
-  world.addSpriteCopy(enemySprite);
-  world.printSprites();
-  System.out.println("Done adding sprites..");
+  println("Game started...");
 
 }
 
@@ -84,21 +104,21 @@ void draw() {
 
   updateTitleBar();
 
+  //handle sprites on screen
   if (msElapsed % 300 == 0) {
     populateSprites();
     moveSprites();
   }
-
   updateScreen();
   
+  //check for end of game
   if(isGameOver()){
     endGame();
   }
-
-  checkExampleAnimation();
   
+  //handle timing
   msElapsed +=100;
-  grid.pause(100);
+  skyGrid.pause(100);
 
 }
 
@@ -115,7 +135,7 @@ void keyPressed(){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileImage(oldLoc);
+    skyGrid.clearTileImage(oldLoc);
 
     //change the field for player1Row
     player1Row--;
@@ -123,11 +143,11 @@ void keyPressed(){
   }
 
   //set [RIGHT] key to move the player1 up
-  if(player1Col !=  grid.getNumCols()-1 && keyCode == 39){
+  if(player1Col !=  skyGrid.getNumCols()-1 && keyCode == 39){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileImage(oldLoc);
+    skyGrid.clearTileImage(oldLoc);
 
     //change the field for player1Col
     player1Col++;
@@ -140,10 +160,10 @@ void mouseClicked(){
   
   //check if click was successful
   System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
-  System.out.println("Grid location: " + grid.getGridLocation());
+  System.out.println("Grid location: " + skyGrid.getGridLocation());
 
   //what to do if clicked? (Make player1 jump back)
-  GridLocation clickedLoc = grid.getGridLocation();
+  GridLocation clickedLoc = skyGrid.getGridLocation();
   GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   
   if(clickedLoc.equals(player1Loc)){
@@ -153,7 +173,7 @@ void mouseClicked(){
   //Toggle the animation on & off
   doAnimation = !doAnimation;
   System.out.println("doAnimation: " + doAnimation);
-  grid.setMark("X",grid.getGridLocation());
+  skyGrid.setMark("X",skyGrid.getGridLocation());
   
 }
 
@@ -179,16 +199,30 @@ public void updateTitleBar(){
 public void updateScreen(){
 
   //Update the Background
-  background(bg);
+  background(currentScreen.getBg());
 
-  //Display the Player1 image
-  GridLocation player1Loc = new GridLocation(player1Row,player1Col);
-  grid.setTileImage(player1Loc, player1);
+  //splashScreen update
+  if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
+    currentScreen = skyGrid;
+  }
+
+  //skyGrid Screen Updates
+  if(currentScreen == skyGrid){
+
+    //Display the Player1 image
+    GridLocation player1Loc = new GridLocation(player1Row,player1Col);
+    skyGrid.setTileImage(player1Loc, player1);
+      
+    //update other screen elements
+    skyGrid.showSprites();
+    skyGrid.showImages();
+    skyGrid.showGridSprites();
+
+    checkExampleAnimation();
     
-  //update other screen elements
-  grid.showImages();
-  grid.showSprites();
-  world.showSprites();
+  }
+
+  //if
 
 
 }
@@ -197,19 +231,19 @@ public void updateScreen(){
 public void populateSprites(){
 
   //What is the index for the last column?
-  int lastCol = grid.getNumCols()-1;
+  int lastCol = skyGrid.getNumCols()-1;
 
   //Loop through all the rows in the last column
-  for(int r=0; r<grid.getNumRows(); r++){
+  for(int r=0; r<skyGrid.getNumRows(); r++){
 
     //Generate a random number
     double rando = Math.random();
 
     //10% of the time, decide to add an image to a Tile
     if(rando < 0.1){
-      //grid.setTileImage(new GridLocation(r,lastCol), enemy);
+      //skyGrid.setTileImage(new GridLocation(r,lastCol), enemy);
       //System.out.println("Populating in row " + r);
-      grid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
+      skyGrid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
     }
   }
 }
@@ -218,15 +252,15 @@ public void populateSprites(){
 public void moveSprites(){
 
   //loop through all of the grid tiles
-  for(int r=0; r<grid.getNumRows(); r++){
-    for (int c=0; c<grid.getNumCols(); c++){
+  for(int r=0; r<skyGrid.getNumRows(); r++){
+    for (int c=0; c<skyGrid.getNumCols(); c++){
 
       //Store GridLocation
       GridLocation loc = new GridLocation(r,c);
 
       //clear out the horses in the first column
       if(c==0){
-        grid.clearTileSprite(loc);
+        skyGrid.clearTileSprite(loc);
       }
 
       //only move if i'm not in the first column
@@ -237,12 +271,15 @@ public void moveSprites(){
         checkCollision(loc, nextLoc);
 
         //check if there is an image/sprite
-        if(grid.hasTileSprite(loc)){
+        if(skyGrid.hasTileSprite(loc)){
           //move the sprite to the new location
-          grid.setTileSprite( nextLoc, grid.getTileSprite(loc) );
+          skyGrid.setTileSprite( nextLoc, skyGrid.getTileSprite(loc) );
+
+          //animate the sprite!
+          skyGrid.getTileSprite(nextLoc).animate(1.0);
           
           //clear the sprite from old loc
-          grid.clearTileSprite(loc);
+          skyGrid.clearTileSprite(loc);
         }
       }
     }
@@ -255,15 +292,15 @@ public void moveSprites(){
 public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
 
   //check current location first
-  PImage image = grid.getTileImage(loc);
-  AnimatedSprite sprite = grid.getTileSprite(loc);
+  PImage image = skyGrid.getTileImage(loc);
+  AnimatedSprite sprite = skyGrid.getTileSprite(loc);
   if(image == null && sprite == null){
     return false;
   }
 
   //check next location
-  PImage nextImage = grid.getTileImage(nextLoc);
-  AnimatedSprite nextSprite = grid.getTileSprite(nextLoc);
+  PImage nextImage = skyGrid.getTileImage(nextLoc);
+  AnimatedSprite nextSprite = skyGrid.getTileSprite(nextLoc);
   if(nextImage == null && nextSprite == null){
     return false;
   }
@@ -273,7 +310,7 @@ public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
     System.out.println("EnemySprite hits Zapdos");
 
     //clear out the enemy if it hits the player
-    grid.clearTileSprite(loc);
+    skyGrid.clearTileSprite(loc);
 
     //lose health
     health--;
@@ -284,7 +321,7 @@ public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
     System.out.println("EnemySprite ran into Zapdos!");
 
     //Remove the image at that original location using the clearTileImage() or clearTileSprite() method from the Grid class.
-    grid.clearTileSprite(nextLoc);
+    skyGrid.clearTileSprite(nextLoc);
 
     //Lose 1 Health from player1
     health--;
@@ -308,15 +345,16 @@ public void endGame(){
     //Update the title bar
 
     //Show any end imagery
-    image(endScreen, 100,100);
+    currentScreen = endScreen;
+    //image(endBg, 100,100);
 
 }
 
-//example method that creates 5 horses along the screen
+//example method that creates 1 horse run along the screen
 public void exampleAnimationSetup(){  
   int i = 2;
   exampleSprite = new AnimatedSprite("sprites/horse_run.png", 50.0, i*75.0, "sprites/horse_run.json");
-  //exampleSprite.resize(200,200);
+  exampleSprite.resize(200,200);
 }
 
 //example method that animates the horse Sprites
@@ -324,5 +362,6 @@ public void checkExampleAnimation(){
   if(doAnimation){
 
     exampleSprite.animateHorizontal(5.0, 1.0, true);
+    System.out.println("animating!");
   }
 }
