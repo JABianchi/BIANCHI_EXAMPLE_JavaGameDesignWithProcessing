@@ -4,6 +4,7 @@
  * Last Edit: 6/6/2023
  * Edited to show all Images & Sprites
  * Made a subclass of World
+ * Ability to remove marks -RJ
  */
 
 public class Grid extends World{
@@ -45,6 +46,24 @@ public class Grid extends World{
   public void setMark(String mark, GridLocation loc){
     board[loc.getRow()][loc.getCol()].setNewMark(mark);
     printGrid();
+  } 
+  
+  //Method to get the mark value at a location -RJ Morel
+  public String getMark(GridLocation loc){
+    return board[loc.getRow()][loc.getCol()].getMark();
+  }
+  
+  //Method to get the mark value at a location -RJ Morel
+  public boolean removeMark(GridLocation loc){
+    boolean isGoodClick = board[loc.getRow()][loc.getCol()].removeMark();
+    return isGoodClick;
+  }
+  
+  //Method to check if a location has a mark -RJ Morel
+  public boolean hasMark(GridLocation loc){
+    GridTile tile = board[loc.getRow()][loc.getCol()];
+    boolean isGoodClick = tile.getMark() != tile.getNoMark();
+    return isGoodClick;
   } 
 
   // Method that Assigns a String mark to a location in the Grid.  

@@ -2,7 +2,7 @@
  * GridTiles have distinguishable marks that will be printed out to the console for easy visualization of a 2D array
  * GridTiles can indicate if they have been "captured", colored, or are displaying an image
  * Authors: Joel Bianchi, Naomi Gaylor, Ezzeldin Moussa
- * Last Edit: 5/22/2023
+ * Last Edit: 6/6/2023
  * Edited to be superclass of HexTile, included hasImage() function
  */
 
@@ -22,6 +22,7 @@ public class GridTile{
   final private static String noMark = " ";
   private boolean isCaptured;
 
+  //------------------GridTile Constructors ---------------//
   //GridTile constructor #1: Adds the specified String mark
   public GridTile(String mark, GridLocation loc){
     this.mark = mark;
@@ -46,9 +47,15 @@ public class GridTile{
     this(noMark, null);
   }
 
+  //------------------Marking Methods ---------------//
   // Accessor method that gets the mark in the GridTile
   public String getMark(){
     return mark;
+  }
+
+  //Method to access the symbol for no mark
+  public String getNoMark(){
+    return noMark;
   }
   
   // Mutator method that automatically changes the mark
@@ -69,7 +76,18 @@ public class GridTile{
       return false;
     }
   }
+
+  public boolean removeMark(){
+    if(this.mark.equals(noMark)){
+      return false;
+    }
+    else{
+      this.mark = noMark;
+      return true;
+    }
+  }
   
+  //------------------PImage Methods ---------------//
   // Mutator method that sets a new PImage in the GridTile
   public void setImage(PImage pi){
     this.pi = pi;
@@ -88,6 +106,7 @@ public class GridTile{
     return true;
   }
 
+  //------------------Sprite Methods ---------------//
  // Mutator method that sets a new AnimatedSprite in the GridTile
   public void setSprite(AnimatedSprite sprite){
     this.sprite = sprite;
@@ -95,7 +114,7 @@ public class GridTile{
 
   //Accessor method that returns the AnimatedSprite stored in the GridTile
   public AnimatedSprite getSprite(){
-    return this.sprite;
+    return sprite;
   }
 
   //Method to check if the GridTile has an AnimatedSprite in it
@@ -106,6 +125,7 @@ public class GridTile{
     return true;
   }
 
+  //------------------Capturing Tiles Methods ---------------//
   //method to "capture" a tile by changing its color
   public void captureTile(color clr){
     this.isCaptured = false;
@@ -123,11 +143,8 @@ public class GridTile{
     return isCaptured;
   }
 
-  //method to access the location of the GridTile
-  public GridLocation getLocation(){
-      return location;
-  }
 
+  //------------------Coloring Tiles Methods ---------------//
   //method to change the color of the tile
   public void setColor(color clr) {
     this.fillColor = clr;
@@ -152,6 +169,13 @@ public class GridTile{
 
   public boolean isCoveredWithPic() {
     return this.coveredPic;
+  }
+
+
+
+  //method to access the location of the GridTile
+  public GridLocation getLocation(){
+      return location;
   }
 
   //ToString simply retuns the mark on the Tile, useful for printing out 2D grids
